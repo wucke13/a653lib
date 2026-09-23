@@ -30,6 +30,14 @@
 #ifndef __A653INIT_H__
 #define __A653INIT_H__
 
+
+#define DEBUG_PRINT(fmt, ...) { \
+  APEX_BYTE __debug_buffer[1024]; \
+  APEX_INTEGER __debug_length = snprintf(__debug_buffer, 1024, fmt, ##__VA_ARGS__); \
+  RETURN_CODE_TYPE __debug_ret_code; \
+  REPORT_APPLICATION_MESSAGE(__debug_buffer, __debug_length, &__debug_ret_code); \
+}
+
 #ifndef __wasm__ /* Do not expose non APEX functions into WebAssembly */
 
 #include "a653Type.h"

@@ -29,16 +29,26 @@
 
 /* includes */
 
+
 #include "a653Lib.h"
+#include "a653Type.h"
 #include "a653Error.h"
 
-#include "a653_i_error.h"
+#include <stdio.h>
+#include <unistd.h>
+
+#include "a653_i_time_lib.h"
 
 void REPORT_APPLICATION_MESSAGE (
        /*in */   MESSAGE_ADDR_TYPE        MESSAGE_ADDR,
        /*in */   MESSAGE_SIZE_TYPE        LENGTH,
        /*out*/   RETURN_CODE_TYPE         *RETURN_CODE ) {
-  *RETURN_CODE = NO_ACTION;
+
+  va_list arglist;
+  struct timespec ts;
+  ts = getTime(); 
+  fprintf(stderr, "%lu.%09lu:%d: %s", ts.tv_sec, ts.tv_nsec, getpid(), MESSAGE_ADDR);
+  *RETURN_CODE = NO_ERROR;
 }
 
 void CREATE_ERROR_HANDLER (

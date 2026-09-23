@@ -13,11 +13,12 @@
 #include "a653Lib.h"
 /* #include "a653_config.h" */
 
-#ifdef __wasm__ /* Do not expose non APEX functions into WebAssembly; in avionic ideally no stdio */
-#define DEBUG_PRINT(fmt, ...) printf(fmt, ##__VA_ARGS__)
-#else
-#define DEBUG_PRINT(fmt, ...) printDebug(3, fmt, ##__VA_ARGS__)
-#endif
+#define DEBUG_PRINT(fmt, ...) { \
+  APEX_BYTE __debug_buffer[1024]; \
+  APEX_INTEGER __debug_length = snprintf(__debug_buffer, 1024, fmt, ##__VA_ARGS__); \
+  RETURN_CODE_TYPE __debug_ret_code; \
+  REPORT_APPLICATION_MESSAGE(__debug_buffer, __debug_length, &__debug_ret_code); \
+}
 
 /* a653_global_config_t global_config = A653_PARTITION_CONFIG_DEF; */
 /* a653_process_config_t A653_PROCESS_CONFIG[] = A653_PROCESS_CONFIG_DEF; */
